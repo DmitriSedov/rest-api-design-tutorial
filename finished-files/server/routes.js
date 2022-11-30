@@ -1,26 +1,28 @@
 const express = require( "express" );
 const router = express.Router();
+// import handlers
 const { handleRoot } = require( "./handlers/rootHandler" );
 const { authenticate } = require( "./handlers/authHandler" );
 const { getUserProfile } = require( "./handlers/usersHandler" );
+// import middlewares
 const notesHandler = require( "./handlers/notesHandler" );
 const verifyToken = require( "./middlewares/auth" );
 const validateNote = require( "./middlewares/noteValidation" );
 
-// root
+// root endpoint
 router.get( "/", handleRoot );
 
-// /auth
 router.post( "/auth", authenticate );
 
-// users/:id
+// We don't have routes for creating, updating or deleting users since those endpoints are covered for the `notes` resource.
+// This sole `users` resource endpoint serves as a good example for Caching.
 router.get( "/users/:id", verifyToken, getUserProfile );
 
-// /notes
+// notes or collection endpoints
 router.get( "/notes", verifyToken, notesHandler.getNotes );
 router.post( "/notes", verifyToken, notesHandler.createNote );
 
-// /notes/:id
+// singleton `note` endpoints
 router.get( "/notes/:id", [ verifyToken, validateNote ], notesHandler.getNoteById );
 router.put( "/notes/:id", [ verifyToken, validateNote ], notesHandler.updateNote );
 router.patch( "/notes/:id", [ verifyToken, validateNote ], notesHandler.editText );

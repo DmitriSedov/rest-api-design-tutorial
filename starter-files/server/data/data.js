@@ -8,7 +8,7 @@
  * Otherwise, we'd have to read those JSON files and parse the JSON into the same JS objects that we're using below.
  */
 
- let notes = [
+let notes = [
   { 
     id: "1",
     text: "New Year Resolutions for 2023",

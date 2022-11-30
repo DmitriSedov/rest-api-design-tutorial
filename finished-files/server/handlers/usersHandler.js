@@ -1,16 +1,18 @@
-let data = require( "../data/data" );
 const crypto = require( 'crypto' );
+const usersCtrl = require( '../controllers/usersController' );
 
 /*
-  - This method handles the "/users/:id" route. 
-  - It returns additional user profile information using the basic user identifiers obtained from JWT payload.
-  - Since user profile data like name and email rarely change, this method uses HTTP Caching to cache the user profile data.
-  - Cache expiration is managed using the `Cache-Control` directive.
-  - `ETag` and `Last-Modified` headers handle cache-invalidation.
+ * This method handles the "/users/:id" route. 
+ * It returns additional user profile information using the basic user identifiers obtained from JWT payload.
+ * Since user profile data like name and email rarely change, this method uses HTTP Caching to cache the user profile data.
+ * Cache expiration is managed using the `Cache-Control` directive.
+ * `ETag` and `Last-Modified` headers handle cache-invalidation.
 */
 exports.getUserProfile = ( req, res ) => {
-  // get additional user information from basic user identifiers in JWT payload
-  const { id, name, email, createdAt, updatedAt } = data.users.find( user => user.id == req.user.sub );
+  // Get additional info about the user
+  // Use the `res.locals.user` object to obtain the authenticated and decoded payload from the auth middleware.
+  // The payload format is: { "sub": 12345, "name": "John Doe" }
+  const { id, name, email, createdAt, updatedAt } = usersCtrl.getUserById( res.locals.user.sub );
   // construct the raw response
   const response = { id, name, email, createdAt };
 

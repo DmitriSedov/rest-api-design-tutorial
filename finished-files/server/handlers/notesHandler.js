@@ -1,4 +1,3 @@
-let data = require( "../data/data" );
 const usersCtrl = require( "../controllers/usersController" );
 const notesCtrl = require( "../controllers/notesController" );
 const hateoasCtrl = require( "../controllers/hateoasController" );

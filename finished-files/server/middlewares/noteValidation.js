@@ -2,11 +2,11 @@ const usersCtrl = require( "../controllers/usersController" );
 const notesCtrl = require( "../controllers/notesController" );
 
 /*
-This middleware function will perform some common validation steps for single "note" resources such as 
- - Making sure the note exists else throw `404 Not Found`.
- - Making sure user has access to the note else throw `404 Not Found`.
+ * This middleware function will perform some common validation steps for single "note" resources such as 
+ *  - Making sure the note exists else throw `404 Not Found`.
+ *  - Making sure user has access to the note else throw `404 Not Found`.
 
-If all is well, then it will store the entire note object in `res.locals` and make it available for future middlewares.
+ * If all is well, then it will store the entire note object in `res.locals` and make it available for future middlewares.
 */
 module.exports = function validateNote( req, res, next ) {
   // Get all the info about the user
