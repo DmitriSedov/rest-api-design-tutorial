@@ -87,10 +87,10 @@ exports.deleteNote = ( req, res ) => {
   res.status( 204 ).send();
 }
 
-exports.handlePostToNote = ( req, res ) => {
-  // set Allow header to indicate which HTTP methods are allowed for this resource
-  res.setHeader( "Allow", "GET, PUT, PATCH, DELETE" );
+exports.handleInvalidRoute = ( req, res ) => {
+  // set `Allow` header to indicate which HTTP methods are allowed for this resource
+  res.setHeader( "Allow", "GET, POST" );
 
-  // return 405 Method Not Allowed
+  // return `405 Method Not Allowed`
   res.status( 405 ).send();
 }

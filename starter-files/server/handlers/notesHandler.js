@@ -18,6 +18,6 @@ exports.deleteNote = ( req, res ) => {
   // route handling logic goes here.
 }
 
-exports.handlePostToNote = ( req, res ) => {
+exports.handleInvalidRoute = ( req, res ) => {
   // route handling logic goes here.
 }

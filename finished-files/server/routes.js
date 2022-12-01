@@ -1,11 +1,11 @@
 const express = require( "express" );
 const router = express.Router();
-// import handlers
+// route handlers
 const { handleRoot } = require( "./handlers/rootHandler" );
 const { authenticate } = require( "./handlers/authHandler" );
 const { getUserProfile } = require( "./handlers/usersHandler" );
-// import middlewares
 const notesHandler = require( "./handlers/notesHandler" );
+// middlewares
 const verifyToken = require( "./middlewares/auth" );
 const validateNote = require( "./middlewares/noteValidation" );
 
@@ -28,7 +28,8 @@ router.put( "/notes/:id", [ verifyToken, validateNote ], notesHandler.updateNote
 router.patch( "/notes/:id", [ verifyToken, validateNote ], notesHandler.editText );
 router.delete( "/notes/:id", [ verifyToken, validateNote ], notesHandler.deleteNote );
 
-// invalid route example
-router.post( "/notes/:id", verifyToken, notesHandler.handlePostToNote );
+// `PUT` is typically not used with collection resources(unless you want to replace the entire collection). 
+// which is why we'll treat this as an invalid route.
+router.put( "/notes", verifyToken, notesHandler.handleInvalidRoute );
 
 module.exports = router;

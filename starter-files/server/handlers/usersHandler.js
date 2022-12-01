@@ -1,3 +1,0 @@
-exports.getUserProfile = ( req, res ) => {
-  // route handling logic goes here.
-}
