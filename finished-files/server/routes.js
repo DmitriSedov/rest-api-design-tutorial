@@ -23,10 +23,10 @@ router.get( "/notes", verifyToken, notesHandler.getNotes );
 router.post( "/notes", verifyToken, notesHandler.createNote );
 
 // singleton `note` endpoints
-router.get( "/notes/:id", [ verifyToken, validateNote ], notesHandler.getNoteById );
-router.put( "/notes/:id", [ verifyToken, validateNote ], notesHandler.updateNote );
-router.patch( "/notes/:id", [ verifyToken, validateNote ], notesHandler.editText );
-router.delete( "/notes/:id", [ verifyToken, validateNote ], notesHandler.deleteNote );
+router.get( "/notes/:id", verifyToken, validateNote, notesHandler.getNoteById );
+router.put( "/notes/:id", verifyToken, validateNote, notesHandler.updateNote );
+router.patch( "/notes/:id", verifyToken, validateNote, notesHandler.editText );
+router.delete( "/notes/:id", verifyToken, validateNote, notesHandler.deleteNote );
 
 // `PUT` is typically not used with collection resources(unless you want to replace the entire collection). 
 // which is why we'll treat this as an invalid route.

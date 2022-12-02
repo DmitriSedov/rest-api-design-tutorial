@@ -12,5 +12,11 @@ app.use(express.urlencoded({ extended: true }));
 // handle our routes
 app.use( "/", routes );
 
+// generic error handler
+app.use((err, req, res, next) => {
+  console.error( err );
+  res.status( 500 ).json({ "message": "Uh oh! Something went wrong.😑", "error_message": err.message });
+});
+
 // Launch the app!
-app.listen( process.env.PORT, () => console.log( `Listening on port ${process.env.PORT}` ) );
+app.listen( process.env.PORT, () => console.log( `👂 Listening on port ${ process.env.PORT }` ) );

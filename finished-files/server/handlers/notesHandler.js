@@ -1,10 +1,10 @@
-const usersCtrl = require( "../controllers/usersController" );
 const notesCtrl = require( "../controllers/notesController" );
-const hateoasCtrl = require( "../controllers/hateoasController" );
+const { getUserById } = require( "../controllers/usersController" );
+const { hateoasify } = require( "../controllers/hateoasController" );
 
 exports.getNotes = ( req, res ) => {
   // get all info about the user
-  const user = usersCtrl.getUserById( res.locals.user.sub );
+  const user = getUserById( res.locals.user.sub );
 
   // initialize query-string params for filtering, searching, sorting and pagination
   const qs = {
@@ -27,13 +27,13 @@ exports.getNotes = ( req, res ) => {
   responseNotes = notesCtrl.sortNotes( responseNotes, qs.sort, qs.order );
 
   // add links for HATEOAS and return the response JSON
-  res.json( hateoasCtrl.hateoasify( responseNotes, qs ) );
+  res.json( hateoasify( responseNotes, qs ) );
 }
 
 exports.getNoteById = ( req, res ) => {
   // add HATEOAS links to the response along with the note object. 
   // Use the `res.locals` object to get note provided by the `noteValidation` middleware.
-  res.json( hateoasCtrl.hateoasify( res.locals.note ));
+  res.json( hateoasify( res.locals.note ));
 }
 
 exports.createNote = ( req, res ) => {
@@ -48,7 +48,7 @@ exports.createNote = ( req, res ) => {
   // send success response to the client
   const newNoteURI = `/notes/${newNote.id}`;
   res.setHeader( "Location", newNoteURI );
-  res.status( 201 ).json( hateoasCtrl.hateoasify( newNote ));
+  res.status( 201 ).json( hateoasify( newNote ));
 }
 
 exports.updateNote = ( req, res ) => {

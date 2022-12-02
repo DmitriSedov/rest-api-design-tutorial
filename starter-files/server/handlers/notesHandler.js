@@ -6,6 +6,10 @@ exports.getNoteById = ( req, res ) => {
   // route handling logic goes here.
 }
 
+exports.createNote = ( req, res ) => {
+  // route handling logic goes here.
+}
+
 exports.updateNote = ( req, res ) => {
   // route handling logic goes here.
 }
