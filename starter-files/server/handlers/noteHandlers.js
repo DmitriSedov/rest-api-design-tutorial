@@ -2,7 +2,7 @@ exports.getNotes = ( req, res ) => {
   // route handling logic goes here.
 }
 
-exports.getNoteById = ( req, res ) => {
+exports.getNote = ( req, res ) => {
   // route handling logic goes here.
 }
 
