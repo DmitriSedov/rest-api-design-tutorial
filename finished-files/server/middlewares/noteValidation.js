@@ -29,5 +29,6 @@ module.exports = function validateNote( req, res, next ) {
 
   // if validation is successful, store the note for future use in `res.locals.note` and call the next middleware.
   res.locals.note = note;
+  // invokes the next middleware
   next();
 }

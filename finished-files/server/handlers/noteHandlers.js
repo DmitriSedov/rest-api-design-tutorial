@@ -37,17 +37,23 @@ exports.getNote = ( req, res ) => {
 }
 
 exports.createNote = ( req, res ) => {
-  // throw 400 Bad Request if the format of the request is invalid
+  // ExpressJS extracts the note's `text` from the request body and stores it in `req.body`.
+  // If no `text` is provided, return `400 Bad Request` HTTP status code.
   if( !( "text" in req.body ) ) {
     return res.status( 400 ).json({ "message": "Invalid request" });
   }
   const { text } = req.body;
 
+  // create the new note
+  // The auth middleware extracts the currently authenticated user's ID from the JWT token
+  // and stores it into `res.local.user` for use in future middlewares.
   const newNote = notesCtrl.createNote( res.locals.user.sub, text );
 
-  // send success response to the client
-  const newNoteURI = `/notes/${newNote.id}`;
+  // Add the new note URI in the `Location` header as per convention
+  const newNoteURI = `/notes/${ newNote.id }`;
   res.setHeader( "Location", newNoteURI );
+  // send success response to the client with status code `201 Created`.
+  // Also include the new note object in the response payload.
   res.status( 201 ).json( hateoasify( newNote ));
 }
 
