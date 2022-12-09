@@ -3,14 +3,23 @@ const { v4: uuidv4 } = require( "uuid" );
 const usersCtrl = require( "./usersController" );
 
 /*
+ * This function returns all the notes in the database irrespective of which user it belongs to. 
+ * We only need this function for the purposes of this tutorial.
+ * In real-life apps, we'd mostly never have such a function.
+ * Please delete this function once you finish the "User Authentication" section in the tutorial.
+ */
+exports.getAllNotes = () => data.notes;
+
+/*
  * Returns the full note object given the note ID.
  */
 exports.getNoteById = id => data.notes.find( note => note.id == id );
 
 /*
- * Returns an array of note object given an array of note IDs.
+ * Returns an array of note objects given an array of note IDs.
  * If `returnPartialRep` is `true`, then the note objects are returned without the `createdAt` field.
- * This is helpful when `notes` are being sent in a response as a collection resource where each note object only needs to contain the most useful information upfront.
+ * This is helpful when `notes` are being sent in a response as a "collection resource" 
+ * where each note object only needs to contain the most useful information upfront.
  * Detailed info about any note in the collection can later be retrieved by invoking the Singleton Note Resource API Endpoint. 
  */
 exports.getNotesByIds = ( noteIds, returnPartialRep=true ) => {
