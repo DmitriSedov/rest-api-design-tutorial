@@ -1,5 +1,6 @@
 const express = require( "express" ),
   app = express(),
+  cors = require( "cors" ),
   routes = require( "./routes.js" );
 
 // load environment variables
@@ -9,8 +10,12 @@ require('dotenv').config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// enable CORS for easily testing API endpoints 
+// via `fetch()` directly from the browser's Console window
+app.use( cors() );
+
 // handle our routes
 app.use( "/", routes );
 
-// Launch the app!
+// Start the server!
 app.listen( process.env.PORT, () => console.log( `👂 Listening on port ${process.env.PORT}` ) );

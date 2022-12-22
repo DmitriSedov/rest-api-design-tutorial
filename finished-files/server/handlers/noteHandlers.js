@@ -31,8 +31,8 @@ exports.getNotes = ( req, res ) => {
 }
 
 exports.getNote = ( req, res ) => {
-  // add HATEOAS links to the response along with the note object. 
   // Use the `res.locals` object to get note provided by the `noteValidation` middleware.
+  // add HATEOAS links to the response along with the note object. 
   res.json( hateoasify( res.locals.note ));
 }
 

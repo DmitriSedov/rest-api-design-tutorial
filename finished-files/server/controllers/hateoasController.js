@@ -37,10 +37,10 @@
 /*
  * Adds HATEOAS links to the response of `/notes` or `notes/{id}`. 
  */
-exports.hateoasify = ( responseNotes, qs={} ) => {
-  const isCollection = Array.isArray( responseNotes );
+exports.hateoasify = ( response, qs={} ) => {
+  const isCollection = Array.isArray( response );
 
-  return isCollection ? hateoasifyNotes( responseNotes, qs ) : hateoasifyNote( responseNotes );
+  return isCollection ? hateoasifyNotes( response, qs ) : hateoasifyNote( response );
 }
 
 
@@ -90,15 +90,17 @@ function hateoasifyNotes( responseNotes, qs ) {
 /*
  * Adds HATEOAS links to the response of a singleton note resource endpoint: `/notes/{id}`.
  */
-function hateoasifyNote( responseNotes ) {
+function hateoasifyNote( responseNote ) {
   const links = [
-    { rel: "self", href: `/notes/${responseNotes.id}`, method: "GET" },
-    { rel: "edit-text", href: `/notes/${responseNotes.id}`, method: "PATCH" },
-    { rel: "update", href: `/notes/${responseNotes.id}`, method: "PUT" },
-    { rel: "delete", href: `/notes/${responseNotes.id}`, method: "DELETE" },
-  ]
+    { rel: "self", href: `/notes/${responseNote.id}`, method: "GET" },
+    { rel: "edit-text", href: `/notes/${responseNote.id}`, method: "PATCH" },
+    { rel: "update", href: `/notes/${responseNote.id}`, method: "PUT" },
+    { rel: "delete", href: `/notes/${responseNote.id}`, method: "DELETE" },
+    { rel: "notes", href: `/notes`, method: "GET" }
+  ]; 
+
   return {
-    ...responseNotes,
+    ...responseNote,
     links
   };
 }
