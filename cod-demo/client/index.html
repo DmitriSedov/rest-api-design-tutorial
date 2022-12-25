@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REST API - Code-On-Demand Constraint Demo</title>
+</head>
+<body>
+  <h1>REST API - Code-On-Demand Constraint Demo</h1>
+
+  <script>
+    // make an AJAX call to the root API endpoint
+    fetch( "http://localhost:3000/" )
+      // parse the raw response into plain text
+      .then( function( response ){ 
+        return response.text(); 
+      })
+      // run the executable JavaScript code
+      .then( function( executableJSCode ){ 
+        eval( executableJSCode ); 
+      })
+      // catch any errors that may happen
+      .catch( function( err ){ 
+        console.log( err ); 
+        alert( "Uh oh! Something went wrong." ); 
+      });
+  </script>
+</body>
+</html>
