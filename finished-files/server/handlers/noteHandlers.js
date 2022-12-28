@@ -1,13 +1,15 @@
 const notesCtrl = require( "../controllers/notesController" );
 const { getUserById } = require( "../controllers/usersController" );
 const { hateoasify } = require( "../controllers/hateoasController" );
+const { paginate } = require( "../controllers/paginationController" );
 
 exports.getNotes = ( req, res ) => {
   // get all info about the user
   const user = getUserById( res.locals.user.sub );
 
-  // initialize query-string params for filtering, searching, sorting and pagination
-  const qs = {
+  // Initialize params for filtering, searching, sorting and pagination.
+  // This makes sure that we set defaults if these are not included in the URI.
+  const params = {
     q: req.query.q || "",
     limit: req.query.limit || 2,
     page: req.query.page || 1,
@@ -16,18 +18,27 @@ exports.getNotes = ( req, res ) => {
   };
 
   // validate query-string params
-  if( isNaN( qs.limit ) || isNaN( qs.page ) || qs.limit < 0 || qs.page < 0 || ![ "updatedAt", "createdAt" ].includes( qs.sort ) || ![ "asc", "desc" ].includes( qs.order )) {
+  if( isNaN( params.limit ) || isNaN( params.page ) || params.limit < 0 || params.page < 0 || ![ "updatedAt", "createdAt" ].includes( params.sort ) || ![ "asc", "desc" ].includes( params.order )) {
     return res.status( 400 ).json({ "message": "Invalid request" });
   }
 
+  // get array of note objects from the array of note IDs
   let responseNotes = notesCtrl.getNotesByIds( user.notes );
+
+  // paginate the results so that only results in the 
+  // current page are included in the response
+  const paginationInfo = paginate( responseNotes, params.page, params.limit  );
+  responseNotes = paginationInfo.paginatedResults;
+  params.lastPage = paginationInfo.lastPage;
+
   // filter notes by performing a text search
-  responseNotes = notesCtrl.filterNotes( responseNotes, qs.q );
+  responseNotes = notesCtrl.filterNotes( responseNotes, params.q );
+
   // sort on the "createdAt" or "updatedAt" fields in either "asc" or "desc" order
-  responseNotes = notesCtrl.sortNotes( responseNotes, qs.sort, qs.order );
+  responseNotes = notesCtrl.sortNotes( responseNotes, params.sort, params.order );
 
   // add links for HATEOAS and return the response JSON
-  res.json( hateoasify( responseNotes, qs ) );
+  res.json( hateoasify( responseNotes, params ) );
 }
 
 exports.getNote = ( req, res ) => {
