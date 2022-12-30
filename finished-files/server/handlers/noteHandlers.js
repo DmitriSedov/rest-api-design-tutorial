@@ -25,14 +25,14 @@ exports.getNotes = ( req, res ) => {
   // get array of note objects from the array of note IDs
   let responseNotes = notesCtrl.getNotesByIds( user.notes );
 
+  // filter notes by performing a text search
+  responseNotes = notesCtrl.filterNotes( responseNotes, params.q );
+
   // paginate the results so that only results in the 
   // current page are included in the response
   const paginationInfo = paginate( responseNotes, params.page, params.limit  );
   responseNotes = paginationInfo.paginatedResults;
   params.lastPage = paginationInfo.lastPage;
-
-  // filter notes by performing a text search
-  responseNotes = notesCtrl.filterNotes( responseNotes, params.q );
 
   // sort on the "createdAt" or "updatedAt" fields in either "asc" or "desc" order
   responseNotes = notesCtrl.sortNotes( responseNotes, params.sort, params.order );
