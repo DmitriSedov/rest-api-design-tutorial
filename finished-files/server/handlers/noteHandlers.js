@@ -57,9 +57,7 @@ exports.createNote = ( req, res ) => {
   const { text } = req.body;
 
   // create the new note
-  // The auth middleware extracts the currently authenticated user's ID 
-  // from the JWT token and stores it into `res.local.user` 
-  // for use in future middlewares.
+  // The auth middleware stores the authenticated user info in `res.locals.user`. 
   const newNote = notesCtrl.createNote( res.locals.user.sub, text );
 
   // Add the new note URI in the `Location` header as per convention
@@ -92,6 +90,7 @@ exports.editText = ( req, res ) => {
   }
 
   // everything seems fine, let's update the note text.
+  // The noteValidation middleware stores the current note in `res.locals.note`.
   notesCtrl.editText( res.locals.note, req.body.text );
 
   // send success response to the client. No response body required.
@@ -100,6 +99,8 @@ exports.editText = ( req, res ) => {
 
 exports.deleteNote = ( req, res ) => {
   // delete the note from the database
+  // The auth middleware stores the authenticated user info in `res.locals.user`. 
+  // The noteValidation middleware stores the current note in `res.locals.note`.
   notesCtrl.deleteNote( res.locals.user.sub, res.locals.note );
 
   // send success response to the client
