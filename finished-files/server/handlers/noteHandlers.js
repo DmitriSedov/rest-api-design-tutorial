@@ -69,9 +69,11 @@ exports.createNote = ( req, res ) => {
 }
 
 exports.updateNote = ( req, res ) => {
-  // validate whether the request body contains all the properties inside a note object i.e. `id`, `text`, `createdAt`, `updatedAt`.
-  // if it doesn't then PUT will replace the existing note object with the new one without the missing properties.
-  if( !(( "id" in req.body ) && ( "text" in req.body ) && ( "createdAt" in req.body ) && ( "updatedAt" in req.body )) ) {
+  // Request body should contain the complete representation of a note resource
+  // If it doesn't, then return a `400 Bad Request` error.
+  if( !( "id" in req.body ) || !( "text" in req.body ) || 
+      !( "createdAt" in req.body ) || !( "updatedAt" in req.body ) 
+    ) {
     return res.status( 400 ).json({ "message": "Invalid request" });
   }
 

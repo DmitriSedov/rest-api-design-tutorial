@@ -38,8 +38,8 @@ function generateQueryString( limit, page, filter, sort, order ){
 
 
 /*
- * Adds HATEOAS links to the response of `/notes` or `notes/{id}`. 
- */
+ Adds HATEOAS links to a collection of notes or an individual note. 
+*/
 exports.hateoasify = ( response, params ) => {
   const isCollection = Array.isArray( response );
 
@@ -48,20 +48,18 @@ exports.hateoasify = ( response, params ) => {
 
 
 /*
- * Adds HATEOAS links to the response of the collection resource endpoint: `/notes`. 
- */
+  Adds the `links` property for a collection of notes and for each note within it.
+*/
 function hateoasifyNotes( responseNotes, params ) {
   const { limit, page, lastPage, q, sort, order } = params;
 
-  // Add a `links` array to each individual note object within the `notes` array.
-  // Each `links` array will expose a `self` link which can be used to 
-  // derive more information about the singleton note.
+  // Add a `links` array to each individual note object within the collection.
+  // The `self` URI can be used to fetch more info about the note.
   responseNotes.forEach( n => {
     n.links = [{ rel: "self", href: `/notes/${ n.id }`, method: "GET" }]
   });
 
-  // Add a "links" array to the entire response object. 
-  // This `links` property will expose actions on the entire `/notes` collection.
+  // Add a "links" array for the entire collection of notes.
   const links = [
     { 
       rel: "self", 
@@ -112,8 +110,8 @@ function hateoasifyNotes( responseNotes, params ) {
 
 
 /*
- * Adds HATEOAS links to the response of a singleton note resource endpoint: `/notes/{id}`.
- */
+  Adds the `links` property to a note object 
+*/
 function hateoasifyNote( responseNote ) {
   const links = [
     { rel: "self", href: `/notes/${responseNote.id}`, method: "GET" },
